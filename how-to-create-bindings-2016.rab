@@ -1,0 +1,36 @@
+= Ruby bindings 2016
+
+: subtitle
+   How to create bindings 2016
+
+: author
+   Kouhei Sutou
+: institution
+   ClearCode Inc.
+: content-source
+   RubyKaigi 2016
+: date
+   2016-09-08
+: allotted-time
+   35m
+: theme
+   .
+
+= Silver sponsor
+
+...
+
+== slide property
+
+: enable-title-on-image
+   false
+
+= Goal\n(('note:目標'))
+
+(('tag:center'))
+(('tag:large'))
+You know about\n
+how to create bindings
+
+(('tag:center'))
+(('note:バインディングの作り方を知ること'))

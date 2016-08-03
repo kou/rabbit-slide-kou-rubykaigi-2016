@@ -1,0 +1,23 @@
+---
+id: rubykaigi-2016
+base_name: how-to-create-bindings-2016
+tags:
+- rabbit
+- ruby
+- bindings
+presentation_date: 2016-09-08
+version: 2016.9.8.0
+licenses:
+- CC BY-SA 4.0
+slideshare_id: 
+speaker_deck_id: 
+ustream_id: 
+vimeo_id: 
+youtube_id: 
+author:
+  markup_language: :rd
+  name: Kouhei Sutou
+  email: kou@clear-code.com
+  rubygems_user: kou
+  slideshare_user: kou
+  speaker_deck_user: 
