@@ -18,12 +18,14 @@
 
 = Silver sponsor
 
-...
+  # img
+  # src = images/clear-code-silver-sponsor.png
+  # relative_height = 100
 
-== slide property
+# == slide property
 
-: enable-title-on-image
-   false
+# : enable-title-on-image
+#    false
 
 = Goal\n(('note:目標'))
 
