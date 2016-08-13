@@ -22,7 +22,7 @@
   # src = images/clear-code-silver-sponsor.png
   # relative_height = 100
 
-# == slide property
+# == Slide properties
 
 # : enable-title-on-image
 #    false
@@ -36,3 +36,123 @@ how to create bindings
 
 (('tag:center'))
 (('note:バインディングの作り方を知ること'))
+
+= Bindings?\n(('note:バインディングとは'))
+
+  * Glue of (('note:(mainly)')) C and Ruby\n
+    (('note:主にCとRubyをつなぐもの'))
+
+    * (('wait'))You can use features implemented in C from Ruby\n
+      (('note:Cで実装された機能をRubyから使える'))
+
+    * (('wait'))e.g.: Socket, OpenSSL, YAML, ...\n
+      (('note:例：ソケット、OpenSSL、YAML…'))
+
+= Bindings\n(('note:バインディング'))
+
+  # image
+  # src = images/bindings.svg
+  # relative_height = 100
+
+== slide properties
+
+: enable-title-on-image
+   false
+
+= Extension library?\n(('note:拡張ライブラリーとは'))
+
+  * Ruby library written in C\n
+    (('note:Cで書かれたRuby用ライブラリー'))
+  * (('wait'))Normally, bindings are extension library\n
+    (('note:多くの場合、バインディングは拡張ライブラリーでもある'))
+    * e.g.: (({Pathname})) isn't bindings\n
+      (('note:例：(({Pathname}))はバインディングではない'))
+
+= Extension library and bindings\n(('note:拡張ライブラリーとバインディング'))
+
+  # image
+  # src = images/extension-library-and-bindings.svg
+  # relative_height = 100
+
+== slide properties
+
+: enable-title-on-image
+   false
+
+= How to create bindings\n(('note:バインディングの作り方'))
+
+= Method1: C API\n(('note:方法1：C API'))
+
+  * Use C API provided by Ruby\n
+    (('note:Rubyが提供するC APIを使う'))
+    * (('wait'))It's for creating extension library\n
+      (('note:拡張ライブラリーを作るためのAPI'))
+
+= C API: Example\n(('note:C API：例'))
+
+  # coderay c
+  #include <ruby.h>
+  void
+  Init_hello(void)
+  {
+    rb_define_class("Hello", rb_cObject);
+    /* Ruby: class Hello; end */
+  }
+
+= C API: Initialize\n(('note:C API：初期化'))
+
+  # coderay c
+  #include <ruby.h>
+  void
+  Init_#{module_name}(void)
+  {
+    /* require "#{module_name}"
+       calls this function */
+  }
+
+= C API: Init example\n(('note:C API：初期化例'))
+
+  # coderay c
+  #include <ruby.h>
+  void
+  Init_hello(void)
+  {
+    /* require "hello"
+       calls this function */
+  }
+
+= C API: Define method\n(('note:C API：メソッド定義'))
+
+  # coderay c
+  static VALUE hello_to_s(VALUE self) {
+    return rb_str_new_cstr("Hello");
+  }
+  void Init_hello(void) {
+    VALUE hello;
+    hello = rb_define_class("Hello", rb_cObject);
+    rb_define_method(hello, "to_s", hello_to_s, 0);
+  }
+
+= C API: Build1\n(('note:C API：ビルド1'))
+
+  # coderay ruby
+  # extconf.rb
+  require "mkmf"
+  # "hello" == "#{module_name}"
+  create_makefile("hello")
+
+= C API: Build2\n(('note:C API：ビルド2'))
+
+  % ruby extconf.rb
+  % make
+  (hello.so is generated.)
+  （hello.soができる。）
+
+= C API: Use\n(('note:C API：使う'))
+
+  % irb -I . -r hello
+  irb(main):001:0> hello = Hello.new
+  => #<Hello:0x00000001b6b470>
+  irb(main):002:0> hello.to_s
+  => "Hello"
+
