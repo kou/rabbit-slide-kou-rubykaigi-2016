@@ -166,6 +166,15 @@ how to create bindings
   * (('wait'))Show it from now just FYI\n
     (('note:参考までにこれから作り方を紹介する'))
 
+= C API: Again, FYI!\n(('note:C API：参考のためですよ！'))
+
+  * You don't need to understand about details now\n
+    (('note:この場では詳細をわからなくても構わない'))\n
+    * (('note:See also: Ruby:doc/extension.rdoc'))
+    * (('note:See also: kou/rabbit-slide-kou-rubykaigi-2016'))
+  * You just need to know how many steps exist\n
+    (('note:どのくらいステップがあるかわかれば十分'))
+
 = Bindings target\n(('note:バインディング対象'))
 
   # coderay c
@@ -290,3 +299,21 @@ how to create bindings
   => #<Hello:0x00000002ae0e28>
   irb(main):003:0> hello.message
   => "Hello"
+
+= C API: Merit\n(('note:C API：メリット'))
+
+  * Can create bindings\n
+    (('note:バインディングを作れる'))
+  * Can use only with C and Ruby knowledge\n
+    (('note:CとRubyを知っていれば使える'))
+
+= C API: Demerit\n(('note:C API：デメリット'))
+
+  * Many works for many (('note:target')) API\n
+    (('note:対象のAPIがたくさんあるとやることが多い'))
+  * Users need C compiler to install\n
+    (('note:ユーザーはインストール時にCコンパイラーが必要'))
+    * Most Windows users don't have it\n
+      (('note:多くのWindowsユーザーは持っていない'))
+
+= C API: Windows users\n(('note:C API：Windowsユーザー'))
