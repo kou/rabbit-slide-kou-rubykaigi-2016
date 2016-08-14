@@ -1,6 +1,9 @@
 *.o
 *.so
+*.log
 .DS_Store
 /.tmp/
 /pkg/
 /pdf/
+/c-api/bindings/Makefile
+/c-api/extension/Makefile

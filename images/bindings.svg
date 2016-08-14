@@ -108,8 +108,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.7"
-     inkscape:cx="138.69"
-     inkscape:cy="14.091782"
+     inkscape:cx="-234.88143"
+     inkscape:cy="11.234639"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -182,20 +182,20 @@
        style="opacity:0.98999999;fill:#ffffff;fill-opacity:1;stroke:url(#linearGradient4224);stroke-width:5;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <path
        style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Arrow1Mstart);marker-end:url(#Arrow1Mend)"
-       d="m 366.22487,304.66615 0,75.42945"
+       d="m 357.65344,304.66615 0,75.42945"
        id="path4245"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="287.53503"
+       x="278.96359"
        y="416.80295"
        id="text4148"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan4150"
-         x="287.53503"
+         x="278.96359"
          y="416.80295">Bindings</tspan></text>
     <text
        xml:space="preserve"
@@ -211,24 +211,24 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Monospace;-inkscape-font-specification:Monospace;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="227.2444"
+       x="218.67297"
        y="290.90393"
        id="text4156"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan4158"
-         x="227.2444"
+         x="218.67297"
          y="290.90393">require &quot;socket&quot;</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Monospace;-inkscape-font-specification:Monospace;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="286.03345"
+       x="277.46201"
        y="538.14832"
        id="text4160"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan4162"
-         x="286.03345"
+         x="277.46201"
          y="538.14832">socket(2)</tspan></text>
     <rect
        style="opacity:0.98999999;fill:none;fill-opacity:1;stroke:#4e9a06;stroke-width:5;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
@@ -243,7 +243,7 @@
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path6563"
-       d="m 366.22487,428.91491 0,75.42945"
+       d="m 357.65344,428.91491 0,75.42945"
        style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker6565);marker-end:url(#marker6593)" />
   </g>
 </svg>
