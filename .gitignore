@@ -7,3 +7,5 @@
 /pdf/
 /c-api/bindings/Makefile
 /c-api/extension/Makefile
+/swig/Makefile
+/swig/hello_wrap.c

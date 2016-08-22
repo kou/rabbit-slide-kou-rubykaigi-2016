@@ -334,7 +334,7 @@ how to create bindings
   * (('wait'))Windows users don't need C compiler😼\n
     (('note:WindowsユーザーはCコンパイラーを用意しなくてよい'))
 
-= Fat gem: Paths\n(('note:Fat gem：パス'))
+= Fat gem: Paths\n(('note:fat gem：パス'))
 
 Built binaries included in gem:\n
 (('note:gem内にビルド済みバイナリーが入っている：'))
@@ -344,7 +344,7 @@ Built binaries included in gem:\n
   ./lib/2.2/hello.so # For Ruby 2.2
   ./lib/2.3/hello.so # For Ruby 2.3
 
-= Fat gem: Load\n(('note:Fat gem：読み込み'))
+= Fat gem: Load\n(('note:fat gem：読み込み'))
 
   # coderay ruby
   # hello.rb
@@ -356,7 +356,7 @@ Built binaries included in gem:\n
     require "hello.so"
   end
 
-= Fat gem: Paths: Bindings\n(('note:Fat gem：バインディングの時のパス'))
+= Fat gem: Paths: Bindings\n(('note:fat gem：バインディングの時のパス'))
 
   ./lib/hello.rb
   ./lib/2.1/hello.so # For Ruby 2.1
@@ -365,7 +365,7 @@ Built binaries included in gem:\n
   # ↓Target library's DLL
   ./vendor/local/bin/hello.dll
 
-= Fat gem: Load: Bindings\n(('note:Fat gem：バインディングの時の読み込み'))
+= Fat gem: Load: Bindings\n(('note:fat gem：バインディングの時の読み込み'))
 
   # coderay ruby
   # hello.rb
@@ -377,4 +377,114 @@ Built binaries included in gem:\n
     major, minor, = RUBY_VERSION.split(".")
     # ...
 
-= Fat gem: How to create?\n(('note:Fat gem：作り方'))
+= Fat gem: How to create?\n(('note:fat gem：作り方'))
+
+  (1) (('wait'))Build DLLs\n
+      (('note:DLLをビルド'))
+  (2) (('wait'))Bundle DLLs to gem\n
+      (('note:gemにDLLをバンドル'))
+
+= Fat gem: How to build?\n(('note:fat gem：ビルド方法'))
+
+  * (('wait'))Build on Windows with C compiler\n
+    (('note:Windows上でCコンパイラーでビルド'))
+  * (('wait'))Build on GNU/Linux or OS X with C cross compiler\n
+    (('note:GNU/LinuxまたはOS X上でCクロスコンパイラーでビルド'))
+    * Popular\n
+      (('note:こちらが一般的'))
+
+= How to cross compile\n(('note:クロスコンパイル方法'))
+
+  (1) Cross compile target Rubyies\n
+      (('note:対象のRubyをクロスコンパイル'))
+  (2) Run (({extconf.rb})) with target Rubies\n
+      (('note:対象のRubyで(({extconf.rb}))を実行'))
+  (3) Cross compile\n
+      (('note:クロスコンパイル'))
+
+= Fat gem helper gems\n(('note:fat gem作成支援gem'))
+
+  * rake-compiler
+    * Cross compiling and bundling\n
+      (('note:クロスコンパイルとバンドル支援'))
+  * rake-compiler-dock
+    * Prepares build environment\n
+      (('note:ビルド環境用意支援'))
+
+= Fat gem and bindings\n(('note:fat gemとバインディング'))
+
+  * Bindings need DLL of target library\n
+    (('note:バインディングは対象ライブラリーのDLLも必要'))
+  * Target library should be also cross compiled\n
+    (('note:対象ライブラリーもクロスコンパイルが必要'))
+
+= How to cross compile1\n(('note:クロスコンパイル方法1'))
+
+For GNU Autotools:
+
+  % ./configure \
+      --prefix=vendor/local \
+      --host=x86_64-w64-mingw32
+  % make
+  % make install
+
+= How to cross compile2\n(('note:クロスコンパイル方法2'))
+
+For CMake:
+
+  % cmake . \
+      -DCMAKE_INSTALL_PREFIX=vendor/local \
+      -DCMAKE_SYSTEM_NAME=Windows \
+      -DCMAKE_SYSTEM_PROCESSOR=x64 \
+      -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc
+  % make
+  % make install
+
+= How to bundle\n(('note:バンドル方法'))
+
+  # coderay ruby
+  # #{gem_name}.gemspec
+  Gem::Specification.new do |spec|
+    # ...
+    spec.files +=
+      Dir.glob("vendor/local/**/*")
+    # ...
+  end
+
+= Fat gem & Windows users\n(('note:fat gemとWindowsユーザー'))
+
+  * Windows users can't use bindings created by C API\n
+    (('note:インストールが難しくてWindowsユーザーはC APIで作成されたバインディングをインストールできない'))
+    * Difficult to install
+  * (('wait'))Fat gem makes bindings easy to install for Windows users\n
+    (('note:fat gemがあれば簡単にインストールできる'))
+
+= C API: Demerit (reprise)\n(('note:C API：デメリット（再掲）'))
+
+  * Many works for many (('note:target')) API\n
+    (('note:対象のAPIがたくさんあるとやることが多い'))
+  * (('wait'))Users need C compiler to install\n
+    (('note:ユーザーはインストール時にCコンパイラーが必要'))
+    * Most Windows users don't have it\n
+      (('note:多くのWindowsユーザーは持っていない'))
+
+= SWIG
+
+(('tag:center'))
+Simplified Wrapper and Interface Generator
+
+  * (('wait'))Generate bindings by C API\n
+    (('note:C APIを使ったバインディングを生成'))
+  * (('wait'))Reduce hand writing codes\n
+    (('note:手書きのコードを減らせる'))
+
+= SWIG: How to use\n(('note:SWIG：使い方'))
+
+  (1) Generate bindings\n
+      (('note:バインディングを生成'))
+  (2) (('wait'))Build bindings (('note:(Same as C API)'))\n
+      (('note:バインディングをビルド（C APIと同じ）'))
+  (3) (('wait'))Use bindings (('note:(Same as C API)'))\n
+      (('note:バインディングを使う（C APIと同じ）'))
+
+= SWIG: Generate\n(('note:SWIG：生成'))
