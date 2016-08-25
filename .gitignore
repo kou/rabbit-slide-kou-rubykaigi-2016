@@ -5,7 +5,6 @@
 /.tmp/
 /pkg/
 /pdf/
-/c-api/bindings/Makefile
-/c-api/extension/Makefile
+/c-api/*/Makefile
 /swig/Makefile
 /swig/hello_wrap.c
