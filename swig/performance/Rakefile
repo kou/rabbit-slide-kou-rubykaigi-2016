@@ -1,0 +1,29 @@
+base_name = "calc"
+
+interface = "#{base_name}.i"
+wrap_c = "#{base_name}_wrap.c"
+makefile = "Makefile"
+
+task :default => :build
+
+file wrap_c => interface do |task|
+  sh("swig",
+     "-Wall",
+     "-I../../libcalc/include",
+     "-ruby",
+     *task.prerequisites)
+end
+
+file makefile => wrap_c do
+  ruby("extconf.rb", "--with-libcalc-dir=../../libcalc")
+end
+
+task :build => makefile do
+  sh("make")
+end
+
+task :benchmark => :build do
+  sh({"LD_LIBRARY_PATH" => "../../libcalc/lib"},
+     Gem.ruby,
+     "bench.rb")
+end
