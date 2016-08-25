@@ -1,0 +1,7 @@
+task :default => :benchmark
+
+task :benchmark do
+  sh({"LD_LIBRARY_PATH" => "../../libcalc/lib"},
+     Gem.ruby,
+     "bench.rb")
+end
