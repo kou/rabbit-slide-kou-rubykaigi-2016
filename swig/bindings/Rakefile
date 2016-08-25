@@ -1,0 +1,23 @@
+base_name = "hello"
+
+interface = "#{base_name}.i"
+wrap_c = "#{base_name}_wrap.c"
+makefile = "Makefile"
+
+task :default => :build
+
+file wrap_c => interface do |task|
+  sh("swig",
+     "-Wall",
+     "-I../../libhello/include",
+     "-ruby",
+     *task.prerequisites)
+end
+
+file makefile => wrap_c do
+  ruby("extconf.rb", "--with-libhello-dir=../../libhello")
+end
+
+task :build => makefile do
+  sh("make")
+end

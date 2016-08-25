@@ -1,0 +1,17 @@
+makefile = "Makefile"
+
+task :default => :build
+
+file makefile => FileList["*.c"] do
+  ruby("extconf.rb", "--with-libcalc-dir=../../libcalc")
+end
+
+task :build => makefile do
+  sh("make")
+end
+
+task :benchmark => :build do
+  sh({"LD_LIBRARY_PATH" => "../../libcalc/lib"},
+     Gem.ruby,
+     "bench.rb")
+end
