@@ -6,5 +6,5 @@
 /pkg/
 /pdf/
 /c-api/*/Makefile
-/swig/Makefile
-/swig/hello_wrap.c
+/swig/*/Makefile
+/swig/*/*_wrap.c
