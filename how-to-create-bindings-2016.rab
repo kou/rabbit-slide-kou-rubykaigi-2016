@@ -84,7 +84,7 @@ how to create bindings
 
   , Ext★, SWIG, FFI, GI☆
 
-  Base\nTech, Ext, Ext, FFI, FFI
+  Base\nTech, Ext, Ext, lib\nffi, lib\nffi
   Impl.\nby, Hand, Gene-rate, Hand, Gene-rate
 
 (('note:★ Extension library（拡張ライブラリー）'))\n
@@ -101,7 +101,7 @@ How powerful auto generated bindings\n
 
   , Ext★, SWIG, FFI, GI☆
 
-  Base\nTech, ((*Ext*)), ((*Ext*)), FFI, FFI
+  Base\nTech, ((*Ext*)), ((*Ext*)), lib\nffi, lib\nffi
   Impl.\nby, Hand, Gene-rate, Hand, Gene-rate
 
 (('note:★ Extension library（拡張ライブラリー）'))\n
@@ -109,7 +109,7 @@ How powerful auto generated bindings\n
 
 = Extension library\n(('note:拡張ライブラリーとは'))
 
-  * Ruby library written in C\n
+  * Ruby library written in ((*C*))\n
     (('note:Cで書かれたRuby用ライブラリー'))
   * (('wait'))Most bindings are ext lib\n
     (('note:多くのバインディングは拡張ライブラリーとして実装'))
@@ -129,29 +129,249 @@ How powerful auto generated bindings\n
 : enable-title-on-image
    false
 
-= What is FFI?\n(('note:FFIってなに？'))
+= What is libffi?\n(('note:libffiってなに？'))
 
   # RT
 
   , Ext★, SWIG, FFI, GI☆
 
-  Base\nTech, Ext, Ext, ((*FFI*)), ((*FFI*))
+  Base\nTech, Ext, Ext, ((*lib\nffi*)), ((*lib\nffi*))
   Impl.\nby, Hand, Gene-rate, Hand, Gene-rate
 
 (('note:★ Extension library（拡張ライブラリー）'))\n
 (('note:☆ GObject Introspection: Recommended（オススメ）'))
 
-= FFI\n(('note:FFIとは'))
+= libffi and FFI: 1\n(('note:libffiとFFIとは：1'))
 
-  * ((*F*))oreign ((*F*))unction ((*I*))nterface
-    * = bindings\n
-      (('note: = バインディング'))
-    * ≒ bindings that use libffi\n
-      (('note:≒ libffiを使ったバインディング'))
+  * libffi: Library to impl. FFI
+  * (('wait'))((*F*))oreign ((*F*))unction ((*I*))nterface
+    * Generally:\n
+      All APIs to impl. bindings\n
+      (('note:一般的にはバインディングを実装するためのすべてのAPI'))
+    * Ruby doesn't use "FFI" term\n
+      (('note:Rubyでは「FFI」という単語を使わない'))
+
+= libffi and FFI: 2\n(('note:libffiとFFIとは：2'))
+
+  * Ruby FFI
+    * (('wait'))Library based on libffi\n
+      (('note:libffiを使ったライブラリー'))
+    * (('wait'))Provides ((*Ruby*)) API\n
+      to implement bindings\n
+      (('note:バインディングを実装するためのRubyレベルのAPIを提供'))
+
+= libffi and bindings\n(('note:libffiとバインディング'))
+
+  # image
+  # src = images/libffi-and-bindings.svg
+  # relative_height = 100
+
+== slide properties
+
+: enable-title-on-image
+   false
+
+= Impl. language\n(('note:実装言語'))
+
+  # RT
+
+  , Ext★, SWIG, FFI, GI☆
+
+  Base\nTech, Ext, Ext, lib\nffi, lib\nffi
+  Impl.\nlang, C, C+α, Ruby, Ruby
+
+(('note:★ Extension library（拡張ライブラリー）'))\n
+(('note:☆ GObject Introspection: Recommended（オススメ）'))
+
+= Ext impl. by\n(('note:拡張ライブラリーの実装方法'))
+
+  # RT
+
+  , Ext★, SWIG, FFI, GI☆
+
+  Base\nTech, Ext, Ext, lib\nffi, lib\nffi
+  Impl.\nby, ((*Hand*)), ((*Generate*)), Hand, Gene-rate
+
+(('note:★ Extension library（拡張ライブラリー）'))\n
+(('note:☆ GObject Introspection: Recommended（オススメ）'))
+
+= Ext impl. by: Target\n(('note:拡張ライブラリーの実装方法：対象'))
+
+  # coderay c
+  /* hello.h */
+  #pragma once
+  typedef struct hello_t Hello;
+  Hello      *hello_new    (void);
+  void        hello_free   (Hello *hello);
+  const char *hello_message(Hello *hello);
+
+= Ext impl. by hand\n(('note:手動での拡張ライブラリーの実装'))
+
+(('note:https://github.com/kou/rabbit-slide-kou-rubykaigi-2016/blob/master/c-api/bindings/hello.c'))
+
+  # coderay c
+  #include <ruby.h>
+
+  #include <hello.h>
+
+  static void
+  rb_hello_free(void *data)
+  {
+    Hello *hello = data;
+    hello_free(hello);
+  }
+
+  static const rb_data_type_t rb_hello_type = {
+    "Hello",
+    {
+      NULL,
+      rb_hello_free,
+      NULL,
+    },
+    NULL,
+    NULL,
+    RUBY_TYPED_FREE_IMMEDIATELY,
+  };
+
+  static VALUE
+  rb_hello_alloc(VALUE klass)
+  {
+    return TypedData_Wrap_Struct(klass, &rb_hello_type, NULL);
+  }
+
+  static VALUE
+  rb_hello_initialize(VALUE self)
+  {
+    Hello *hello;
+    hello = hello_new();
+    DATA_PTR(self) = hello;
+    return Qnil;
+  }
+
+  static VALUE
+  rb_hello_message(VALUE self)
+  {
+    Hello *hello;
+    const char *message;
+
+    TypedData_Get_Struct(self, Hello, &rb_hello_type, hello);
+    message = hello_message(hello);
+
+    return rb_str_new_cstr(message);
+  }
+
+  void
+  Init_hello(void)
+  {
+    VALUE hello;
+
+    hello = rb_define_class("Hello", rb_cData);
+    rb_define_alloc_func(hello, rb_hello_alloc);
+    rb_define_method(hello, "initialize", rb_hello_initialize, 0);
+    rb_define_method(hello, "message", rb_hello_message, 0);
+  }
+
+= Ext impl. by generation\n(('note:自動生成での拡張ライブラリーの実装'))
+
+  * (('wait'))SWIG can generate impl.\n
+    (('note:Simplified Wrapper and Interface Generator'))\n
+    (('note:SWIGで実装を生成できる'))
+  * (('wait'))An user
+    * TensorFlow: A library for machine intelligence\n
+      (('note:TensorFlow：機械知能のライブラリー'))\n
+      Uses to generate Python bindings\n
+      (('note:Pythonバインディングを生成するために使用'))
+
+= Ext impl. by SWIG\n(('note:SWIGでの拡張ライブラリーの実装'))
+
+  # coderay c
+  // swig -ruby hello.i -> hello_wrap.c
+  %module hello
+  %{
+  #include <hello.h>
+  %}
+  %include <hello.h>
+
+= Use ext by SWIG\n(('note:SWIGで作った拡張ライブラリーを使う'))
+
+  irb(main):001:0> require "hello"
+  => true
+  irb(main):002:0> hello = Hello.hello_new
+  => #<SWIG::TYPE_p_hello_t:0x000...>
+  irb(main):003:0> Hello.hello_message(hello)
+  => "Hello"
+  irb(main):004:0> Hello.hello_free(hello)
+  => nil
+  # Raw C API... :<
+
+= By SWIG again\n(('note:SWIGでもう一度'))
+
+  # coderay c
+  %module hello
+  %{#include <hello.h>%}
+  typedef struct hello_t {
+    %extend {
+      hello_t() {return hello_new();}
+      ~hello_t() {hello_free($self);}
+      const char *message() {return hello_message($self);}
+    }
+  } Hello;
+
+= Use again\n(('note:もう一度使う'))
+
+  irb(main):001:0> require "hello"
+  => true
+  irb(main):002:0> hello = Hello::Hello.new
+  => #<Hello::Hello:0x000...>
+  irb(main):003:0> hello.message
+  => "Hello"
+  # Object oriented API!
+
+= Wrap up1: Ext\n(('note:まとめ1：拡張ライブラリー'))
+
+  * (('wait'))By hand: Need many works\n
+    (('note:手動：たくさん書かないといけない'))
+  * (('wait'))By generation: Less works\n
+    (('note:生成：書くことが少ない'))
+    * Need more works for easy to use\n
+      (('note:使いやすいAPIにするにはたくさん書かないといけない'))
+
+= Wrap up2: Ext\n(('note:まとめ2：拡張ライブラリー'))
+
+  * On maintenance\n
+    e.g.: New functions\n
+    (('note:メンテナンス時：（例：新しい関数が追加された）'))
+    * (('wait'))By hand: Need more works\n
+      (('note:手動：追加作業あり'))
+    * (('wait'))By generation: No more works\n
+      (('note:生成：追加作業なし'))\n
+      This is a large benefit!\n
+      (('note:これは大きな利点！'))
+
+= libffi impl. by\n(('note:libffiベースでの実装方法'))
+
+  # RT
+
+  , Ext★, SWIG, FFI, GI☆
+
+  Base\nTech, Ext, Ext, lib\nffi, lib\nffi
+  Impl.\nby, Hand, Gene-rate, ((*Hand*)), ((*Generate*))
+
+(('note:★ Extension library（拡張ライブラリー）'))\n
+(('note:☆ GObject Introspection: Recommended（オススメ）'))
+
+= libffi impl. by hand\n(('note:手動でのlibffiベースの実装'))
 
 TODO
 
-= How to create bindings\n(('note:バインディングの作り方'))
+= libffi impl. by generation\n(('note:自動生成でのlibffiベースの実装'))
+
+TODO
+
+= Appendix\n(('note:付録'))
+
+  * Ext, SWIG, FFI, GI impl. details
+  * How to create fat gem
 
 = Method1: C API\n(('note:方法1：C API'))
 
@@ -310,11 +530,11 @@ TODO
 
   # coderay c
   void Init_hello(void) {
-     /* VALUE hello = Hello class */
-     /* Ruby: def initialize; end */
-     rb_define_method(hello,
-    /* Method name */ "initialize",
-                      rb_hello_initialize,
+    /* VALUE hello = Hello class */
+    /* Ruby: def initialize; end */
+    rb_define_method(hello,
+          /* Name */ "initialize",
+                     rb_hello_initialize,
     /* No argument */ 0);
   }
 
