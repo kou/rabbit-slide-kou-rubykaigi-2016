@@ -59,16 +59,66 @@ how to create bindings
 : enable-title-on-image
    false
 
-= Extension library?\n(('note:拡張ライブラリーとは'))
+= But why do I know?\n(('note:でも、どうして知るといいの？'))
+
+  * (('wait'))To use Ruby in more cases\n
+    (('note:Rubyをもっといろんな場面で使うため'))
+    * e.g.: (('tag:x-small:Machine leaning, multimedia, full text search, cipher and so on'))\n
+      (('note:例：機械学習、画像・動画・音声処理、全文検索・暗号'))
+  * (('wait'))We can use existing good features in Ruby by bindings\n
+    (('note:バインディングがあると既存のいい機能をRubyで使える'))
+
+= Incr. bindings developer\n(('note:バインディング開発者が増えるといいな'))
+
+  * How about becoming a bindings developer?\n
+    (('note:バインディング開発者になりませんか？'))
+    * (('wait'))To expand Ruby use cases!\n
+      (('note:Rubyの適用可能領域を増やすために！'))
+    * (('wait'))Not just an user for\n
+      provided features\n
+      (('note:提供された機能を使う1ユーザーではなく'))
+
+= Summary\n(('note:概要'))
+
+  # RT
+
+  , Ext★, SWIG, FFI, GI☆
+
+  Base\nTech, Ext, Ext, FFI, FFI
+  Impl.\nby, Hand, Gene-rate, Hand, Gene-rate
+
+(('note:★ Extension library（拡張ライブラリー）'))\n
+(('note:☆ GObject Introspection: Recommended（オススメ）'))
+
+= Demo\n(('note:デモ'))
+
+How powerful auto generated bindings\n
+(('note:自動生成されたバインディングがいかに強力か'))
+
+= What is ext?\n(('note:拡張ライブラリーってなに？'))
+
+  # RT
+
+  , Ext★, SWIG, FFI, GI☆
+
+  Base\nTech, ((*Ext*)), ((*Ext*)), FFI, FFI
+  Impl.\nby, Hand, Gene-rate, Hand, Gene-rate
+
+(('note:★ Extension library（拡張ライブラリー）'))\n
+(('note:☆ GObject Introspection: Recommended（オススメ）'))
+
+= Extension library\n(('note:拡張ライブラリーとは'))
 
   * Ruby library written in C\n
     (('note:Cで書かれたRuby用ライブラリー'))
-  * (('wait'))Normally, bindings are extension library\n
-    (('note:多くの場合、バインディングは拡張ライブラリーでもある'))
-    * e.g.: (({Pathname})) isn't bindings\n
-      (('note:例：(({Pathname}))はバインディングではない'))
+  * (('wait'))Most bindings are ext lib\n
+    (('note:多くのバインディングは拡張ライブラリーとして実装'))
+    * (({openssl})) is ext lib and bindings\n
+      (('note:(({oepnssl}))は拡張ライブラリーでバインディング'))
+    * Exc.: (({stringio})) is ext lib but...\n
+      (('note:例外：(({stringio}))は拡張ライブラリーだが…'))
 
-= Extension library and bindings\n(('note:拡張ライブラリーとバインディング'))
+= Ext lib and bindings\n(('note:拡張ライブラリーとバインディング'))
 
   # image
   # src = images/extension-library-and-bindings.svg
@@ -79,13 +129,35 @@ how to create bindings
 : enable-title-on-image
    false
 
+= What is FFI?\n(('note:FFIってなに？'))
+
+  # RT
+
+  , Ext★, SWIG, FFI, GI☆
+
+  Base\nTech, Ext, Ext, ((*FFI*)), ((*FFI*))
+  Impl.\nby, Hand, Gene-rate, Hand, Gene-rate
+
+(('note:★ Extension library（拡張ライブラリー）'))\n
+(('note:☆ GObject Introspection: Recommended（オススメ）'))
+
+= FFI\n(('note:FFIとは'))
+
+  * ((*F*))oreign ((*F*))unction ((*I*))nterface
+    * = bindings\n
+      (('note: = バインディング'))
+    * ≒ bindings that use libffi\n
+      (('note:≒ libffiを使ったバインディング'))
+
+TODO
+
 = How to create bindings\n(('note:バインディングの作り方'))
 
 = Method1: C API\n(('note:方法1：C API'))
 
   * Use C API provided by Ruby\n
     (('note:Rubyが提供するC APIを使う'))
-    * (('wait'))It's for creating extension library\n
+    * (('wait'))It's for creating ext lib\n
       (('note:拡張ライブラリーを作るためのAPI'))
 
 = C API: Define class\n(('note:C API：クラス定義'))
@@ -159,7 +231,7 @@ how to create bindings
 
 = C API: Create bindings\n(('note:C API：バインディングを作る'))
 
-  * C API is for extension library\n
+  * C API is for ext lib\n
     (('note:C APIを使うと拡張ライブラリーを作れる'))
   * (('wait'))C API is also for bindings\n
     (('note:C APIを使うとバインディングも作れる'))
