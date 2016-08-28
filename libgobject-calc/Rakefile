@@ -1,0 +1,10 @@
+task :default => :benchmark
+
+task :benchmark do
+  sh({
+       "LD_LIBRARY_PATH" => "gcalc/.libs",
+       "GI_TYPELIB_PATH" => "gcalc",
+     },
+     Gem.ruby,
+     "bench.rb")
+end
