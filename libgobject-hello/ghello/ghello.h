@@ -40,6 +40,6 @@ struct _GHelloClass
 
 GType          g_hello_get_type (void) G_GNUC_CONST;
 GHello        *g_hello_new      (void);
-const gchar   *g_hello_greet    (GHello *hello);
+const gchar   *g_hello_message  (GHello *hello);
 
 G_END_DECLS
