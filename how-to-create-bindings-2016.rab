@@ -362,7 +362,59 @@ How powerful auto generated bindings\n
 
 = libffi impl. by hand\n(('note:手動でのlibffiベースの実装'))
 
-TODO
+  # coderay ruby
+  require "ffi"
+
+  module LibHello
+    extend FFI::Library
+    ffi_lib "../../libhello/lib/libhello.so"
+    attach_function :hello_new, [], :pointer
+    attach_function :hello_message, [:pointer], :string
+    attach_function :hello_free, [:pointer], :void
+  end
+
+= Use libffi impl. by hand\n(('note:手動でのlibffiベースの実装を使う'))
+
+  irb(main):001:0> require "hello"
+  => true
+  irb(main):002:0> hello = LibHello.hello_new
+  => #<FFI::Pointer address=0x00000002b07ef0>
+  irb(main):003:0> LibHello.hello_message(hello)
+  => "Hello"
+  irb(main):004:0> LibHello.hello_free(hello)
+  => nil
+  # Raw C API... :<
+
+= Wrap FFI impl. 1\n(('note:FFIでの実装をラップ1'))
+
+  # coderay ruby
+  class Hello
+    def initialize
+      hello = LibHello.hello_new
+      hello_free = LibHello.method(:hello_free)
+      @hello =
+        FFI::AutoPointer.new(hello, hello_free)
+    end
+  end
+
+= Wrap FFI impl. 2\n(('note:FFIでの実装をラップ2'))
+
+  # coderay ruby
+  class Hello
+    def message
+      LibHello.hello_message(@hello)
+    endg
+  end
+
+= Use wrapped impl.\n(('note:ラップした実装を使う'))
+
+  irb(main):001:0> require "hello"
+  => true
+  irb(main):002:0> hello = Hello.new
+  => #<Hello:0x000...>
+  irb(main):003:0> hello.message
+  => "Hello"
+  # Object oriented API!
 
 = libffi impl. by generation\n(('note:自動生成でのlibffiベースの実装'))
 
