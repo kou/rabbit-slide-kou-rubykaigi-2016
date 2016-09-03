@@ -403,7 +403,7 @@ How powerful auto generated bindings\n
   class Hello
     def message
       LibHello.hello_message(@hello)
-    endg
+    end
   end
 
 = Use wrapped impl.\n(('note:ラップした実装を使う'))
@@ -416,9 +416,21 @@ How powerful auto generated bindings\n
   => "Hello"
   # Object oriented API!
 
-= libffi impl. by generation\n(('note:自動生成でのlibffiベースの実装'))
+= libffi impl. by gen.\n(('note:自動生成でのlibffiベースの実装'))
 
-TODO
+  # coderay ruby
+  require "gi"
+  Hello = GI.load("Hello")
+
+= Use libffi impl. by gen.\n(('note:自動生成でのlibffiベースの実装を使う'))
+
+  irb(main):001:0> require "hello"
+  => true
+  irb(main):002:0> hello = Hello::Hello.new
+  => #<Hello::Hello:0x2a9de98 ptr=0x2ecd540>
+  irb(main):003:0> hello.message
+  => "Hello"
+  # Object oriented API!
 
 = Appendix\n(('note:付録'))
 
