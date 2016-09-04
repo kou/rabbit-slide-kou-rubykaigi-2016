@@ -1,0 +1,165 @@
+= Fat gem
+
+: author
+   Kouhei Sutou
+: institution
+   ClearCode Inc.
+: content-source
+   RubyKaigi 2016
+: date
+   2016-09-08
+: allotted-time
+   5m
+: theme
+   .
+
+= Fat gem?\n(('note:fat gemとは'))
+
+  * Gem includes built binaries\n
+    (('note:ビルド済みバイナリー入りgem'))
+    * (('note:(Mainly)')) Provided for Windows users\n
+      (('note:主にWindowsユーザー向けに提供'))
+  * (('wait'))Windows users don't need C compiler😼\n
+    (('note:WindowsユーザーはCコンパイラーを用意しなくてよい'))
+
+= Why fat gem is needed?\n(('note:どうしてfat gemが必要なのか'))
+
+  * Most Windows users don't have C compiler\n
+    (('note:多くのWindowsユーザーはコンパイラーを持っていない'))
+
+= How to create fat gem\n(('note:fat gemの作り方'))
+
+  * Bundle binaries to gem\n
+    (('note:gemにバイナリーをバンドル'))
+  * Use suitable binaries\n
+    (('note:適切なバイナリーを使う'))
+
+= Path\n(('note:パス'))
+
+  ./lib/hello.rb
+  ./lib/2.1/hello.so # For Ruby 2.1
+  ./lib/2.2/hello.so # For Ruby 2.2
+  ./lib/2.3/hello.so # For Ruby 2.3
+
+= Load\n(('note:読み込み'))
+
+  # coderay ruby
+  # hello.rb
+  begin
+    major, minor, = RUBY_VERSION.split(".")
+    # e.g.: require "2.3/hello.so"
+    require "#{major}.#{minor}/hello.so"
+  rescue LoadError
+    require "hello.so"
+  end
+
+= Paths for bindings\n(('note:バインディングの時のパス'))
+
+  ./lib/hello.rb
+  ./lib/2.1/hello.so # For Ruby 2.1
+  ./lib/2.2/hello.so # For Ruby 2.2
+  ./lib/2.3/hello.so # For Ruby 2.3
+  # ↓Target library's DLL
+  ./vendor/local/bin/hello.dll
+
+= Load for bindings\n(('note:バインディングの時の読み込み'))
+
+  # coderay ruby
+  # hello.rb
+  if /mingw|mswin/ =~ RUBY_PLATFORM
+    ENV["PATH"] += # For finding DLL
+      ";#{__dir__}\\..\\vendor\\local\\bin"
+  end
+  begin
+    major, minor, = RUBY_VERSION.split(".")
+    # ...
+
+= How to create\n(('note:作り方'))
+
+  (1) (('wait'))Build DLLs\n
+      (('note:DLLをビルド'))
+  (2) (('wait'))Bundle DLLs to gem\n
+      (('note:gemにDLLをバンドル'))
+
+= How to build\n(('note:ビルド方法'))
+
+  * (('wait'))Build on Windows with C compiler\n
+    (('note:Windows上でCコンパイラーでビルド'))
+  * (('wait'))Build on GNU/Linux or OS X with C cross compiler\n
+    (('note:GNU/LinuxまたはOS X上でCクロスコンパイラーでビルド'))
+    * Popular\n
+      (('note:こちらが一般的'))
+
+= How to cross compile\n(('note:クロスコンパイル方法'))
+
+  (1) Cross compile target Rubyies\n
+      (('note:対象のRubyをクロスコンパイル'))
+  (2) Run (({extconf.rb})) with target Rubies\n
+      (('note:対象のRubyで(({extconf.rb}))を実行'))
+  (3) Cross compile\n
+      (('note:クロスコンパイル'))
+
+= Fat gem helper gems\n(('note:fat gem作成支援gem'))
+
+  * rake-compiler
+    * Cross compiling and bundling\n
+      (('note:クロスコンパイルとバンドル支援'))
+  * rake-compiler-dock
+    * Prepares build environment\n
+      (('note:ビルド環境用意支援'))
+
+= Fat gem and bindings\n(('note:fat gemとバインディング'))
+
+  * Bindings need DLL of target library\n
+    (('note:バインディングは対象ライブラリーのDLLも必要'))
+  * Target library should be also cross compiled\n
+    (('note:対象ライブラリーもクロスコンパイルが必要'))
+
+= How to cross compile1\n(('note:クロスコンパイル方法1'))
+
+For GNU Autotools:
+
+  % ./configure \
+      --prefix=vendor/local \
+      --host=x86_64-w64-mingw32
+  % make
+  % make install
+
+= How to cross compile2\n(('note:クロスコンパイル方法2'))
+
+For CMake:
+
+  % cmake . \
+      -DCMAKE_INSTALL_PREFIX=vendor/local \
+      -DCMAKE_SYSTEM_NAME=Windows \
+      -DCMAKE_SYSTEM_PROCESSOR=x64 \
+      -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc
+  % make
+  % make install
+
+= How to bundle\n(('note:バンドル方法'))
+
+  # coderay ruby
+  # #{gem_name}.gemspec
+  Rake::ExtensionTask.new(gem_name, spec) do |ext|
+    # ...
+    ext.cross_compiling do |cross_spec|
+      cross_spec.files +=
+        Dir.glob("vendor/local/**/*")
+    end
+  end
+
+= How to build gem\n(('note:gemのビルド方法'))
+
+  % rake cross native gem
+
+= How to release gem\n(('note:gemのリリース方法'))
+
+  % gem push pkg/...-x64-mingw32.gem
+
+= How to install fat gem\n(('note:fat gemのインストール方法'))
+
+  > gem install GEM_NAME
+
+No special options\n
+(('note:特別なオプションはない'))

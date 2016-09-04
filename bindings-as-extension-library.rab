@@ -1,0 +1,224 @@
+= Bindings as\nan extension library
+
+: author
+   Kouhei Sutou
+: institution
+   ClearCode Inc.
+: content-source
+   RubyKaigi 2016
+: date
+   2016-09-08
+: allotted-time
+   5m
+: theme
+   .
+
+= How to create bindings\n(('note:バインディングの作り方'))
+
+  * Use C API provided by Ruby\n
+    (('note:Rubyが提供するC APIを使う'))
+    * (('wait'))It's for creating ext lib\n
+      (('note:拡張ライブラリーを作るためのAPI'))
+
+= Define class\n(('note:クラス定義'))
+
+  # coderay c
+  #include <ruby.h>
+  void
+  Init_hello(void)
+  {
+    rb_define_class("Hello", rb_cObject);
+    /* Ruby: class Hello; end */
+  }
+
+= Initialize\n(('note:初期化'))
+
+  # coderay c
+  #include <ruby.h>
+  void
+  Init_#{module_name}(void)
+  {
+    /* require "#{module_name}"
+       calls this function */
+  }
+
+= Init example\n(('note:初期化例'))
+
+  # coderay c
+  #include <ruby.h>
+  void
+  Init_hello(void)
+  {
+    /* require "hello"
+       calls this function */
+  }
+
+= Define method\n(('note:メソッド定義'))
+
+  # coderay c
+  static VALUE hello_to_s(VALUE self) {
+    return rb_str_new_cstr("Hello");
+  }
+  void Init_hello(void) {
+    VALUE hello;
+    hello = rb_define_class("Hello", rb_cObject);
+    rb_define_method(hello, "to_s", hello_to_s, 0);
+  }
+
+= Build1\n(('note:ビルド1'))
+
+  # coderay ruby
+  # extconf.rb
+  require "mkmf"
+  # "hello" == "#{module_name}"
+  create_makefile("hello")
+
+= Build2\n(('note:ビルド2'))
+
+  % ruby extconf.rb
+  % make
+  (hello.so is generated.)
+
+= Use\n(('note:使う'))
+
+  % irb -I .
+  irb(main):001:0> require "hello"
+  => true
+  irb(main):002:0> hello = Hello.new
+  => #<Hello:0x00000001fd15a0>
+  irb(main):003:0> hello.to_s
+  => "Hello"
+
+= Create bindings\n(('note:バインディングを作る'))
+
+  * C API is for ext lib\n
+    (('note:C APIを使うと拡張ライブラリーを作れる'))
+  * (('wait'))C API is also for bindings\n
+    (('note:C APIを使うとバインディングも作れる'))
+  * (('wait'))Show it from now just FYI\n
+    (('note:参考までにこれから作り方を紹介する'))
+
+= Bindings target\n(('note:バインディング対象'))
+
+  # coderay c
+  /* hello.h */
+  #pragma once
+  typedef struct hello_t Hello;
+  Hello      *hello_new    (void);
+  void        hello_free   (Hello *hello);
+  const char *hello_message(Hello *hello);
+
+= Define class\n(('note:クラス定義'))
+
+  # coderay c
+  void
+  Init_hello(void)
+  {
+    VALUE hello;
+    /* Ruby: class Hello < Data; end */
+    hello = rb_define_class("Hello", rb_cData);
+    rb_define_alloc_func(hello, rb_hello_alloc);
+  }
+
+= Wrap struct\n(('note:構造体をラップ'))
+
+  # coderay c
+  static VALUE
+  rb_hello_alloc(VALUE klass)
+  {
+    /* Allocate memory for wrapping
+       target struct in C (= Hello struct). */
+    return TypedData_Wrap_Struct(klass,
+                                 &rb_hello_type,
+    /* Target struct is NULL at this phase. */
+                                 NULL);
+  }
+
+= Define type metadata\n(('note:型用のメタデータを定義'))
+
+  # coderay c
+  static const rb_data_type_t rb_hello_type = {
+    "Hello", /* Type name. */
+    /* Mark, free, size functions. */
+    {NULL, rb_hello_free, NULL,},
+    NULL, /* Parent. It must be NULL. */
+    NULL, /* Wrapped target struct. */
+    RUBY_TYPED_FREE_IMMEDIATELY,
+  };
+
+= Free function\n(('note:メモリー解放関数'))
+
+  # coderay c
+  static void
+  rb_hello_free(void *data)
+  {
+    Hello *hello = data;
+    /* Just call the free function. */
+    hello_free(hello);
+  }
+
+= Register (({initialize}))\n(('note:(({initialize}))登録'))
+
+  # coderay c
+  void Init_hello(void) {
+    /* VALUE hello = Hello class */
+    /* Ruby: def initialize; end */
+    rb_define_method(hello,
+          /* Name */ "initialize",
+                     rb_hello_initialize,
+    /* No argument */ 0);
+  }
+
+= Initialize\n(('note:初期化'))
+
+  # coderay c
+  static VALUE
+  rb_hello_initialize(VALUE self)
+  {
+    Hello *hello;
+    hello = hello_new();    /* Create a target */
+    DATA_PTR(self) = hello; /* Wrap the target */
+    return Qnil;
+  }
+
+= Bind method\n(('note:メソッドをバインド'))
+
+  # coderay c
+  static VALUE rb_hello_message(VALUE self) {
+    Hello *hello;
+    const char *message;
+    TypedData_Get_Struct( /* Unwrap the target. */
+      self, Hello, &rb_hello_type, hello);
+    message = hello_message(hello); /* Call. */
+    return rb_str_new_cstr(message); /* C -> Ruby */
+  }
+
+= Build1\n(('note:ビルド1'))
+
+  # coderay ruby
+  # extconf.rb
+  require "mkmf"
+  # Accept --with-libhello-*.
+  dir_config("libhello")
+  have_header("hello.h")
+  have_library("hello", "hello_new")
+
+  create_makefile("hello")
+
+= Build2\n(('note:ビルド2'))
+
+  % ruby extconf.rb \
+      --with-libhello-dir=../../libhello
+  % make
+  (hello.so is generated.)
+
+= Use\n(('note:使う'))
+
+  % LD_LIBRARY_PATH=../../libhello/lib \
+      irb -I .
+  irb(main):001:0> require "hello"
+  => true
+  irb(main):002:0> hello = Hello.new
+  => #<Hello:0x00000002ae0e28>
+  irb(main):003:0> hello.message
+  => "Hello"

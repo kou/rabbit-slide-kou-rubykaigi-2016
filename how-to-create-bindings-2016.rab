@@ -64,7 +64,7 @@ how to create bindings
   * (('wait'))To use Ruby in more cases\n
     (('note:Rubyをもっといろんな場面で使うため'))
     * e.g.: (('tag:x-small:Machine leaning, multimedia, full text search, cipher and so on'))\n
-      (('note:例：機械学習、画像・動画・音声処理、全文検索・暗号'))
+      (('note:例：機械学習、画像・動画・音声処理、全文検索、暗号'))
   * (('wait'))We can use existing good features in Ruby by bindings\n
     (('note:バインディングがあると既存のいい機能をRubyで使える'))
 
@@ -72,8 +72,8 @@ how to create bindings
 
   * How about becoming a bindings developer?\n
     (('note:バインディング開発者になりませんか？'))
-    * (('wait'))To expand Ruby use cases!\n
-      (('note:Rubyの適用可能領域を増やすために！'))
+    * (('wait'))To expand use cases of Ruby!\n
+      (('note:Rubyを使えるケースを増やすために！'))
     * (('wait'))Not just an user for\n
       provided features\n
       (('note:提供された機能を使う1ユーザーではなく'))
@@ -143,7 +143,8 @@ How powerful auto generated bindings\n
 
 = libffi and FFI: 1\n(('note:libffiとFFIとは：1'))
 
-  * libffi: Library to impl. FFI
+  * libffi: Library to impl. FFI\n
+    (('note:FFIを実現するためのライブラリー'))
   * (('wait'))((*F*))oreign ((*F*))unction ((*I*))nterface
     * Generally:\n
       All APIs to impl. bindings\n
@@ -204,6 +205,17 @@ How powerful auto generated bindings\n
   Hello      *hello_new    (void);
   void        hello_free   (Hello *hello);
   const char *hello_message(Hello *hello);
+
+= Ext impl. by hand\n(('note:手動での拡張ライブラリーの実装'))
+
+  # img
+  # src = images/bindings-as-extension-library.svg
+  # relative_width = 100
+
+== Slide properties
+
+: enable-title-on-image
+   false
 
 = Ext impl. by hand\n(('note:手動での拡張ライブラリーの実装'))
 
@@ -273,7 +285,18 @@ How powerful auto generated bindings\n
 
 = Ext impl. by generation\n(('note:自動生成での拡張ライブラリーの実装'))
 
-  * (('wait'))SWIG can generate impl.\n
+  # img
+  # src = images/bindings-by-swig.svg
+  # relative_height = 100
+
+== Slide properties
+
+: enable-title-on-image
+   false
+
+= Ext impl. by generation\n(('note:自動生成での拡張ライブラリーの実装'))
+
+  * SWIG can generate impl.\n
     (('note:Simplified Wrapper and Interface Generator'))\n
     (('note:SWIGで実装を生成できる'))
   * (('wait'))An user
@@ -344,7 +367,8 @@ How powerful auto generated bindings\n
     * (('wait'))By hand: Need more works\n
       (('note:手動：追加作業あり'))
     * (('wait'))By generation: No more works\n
-      (('note:生成：追加作業なし'))\n
+      (('note:(But the bindings may not be easy to use)'))\n
+      (('note:生成：（使いやすくないけど）追加作業なし'))\n
       This is a large benefit!\n
       (('note:これは大きな利点！'))
 
@@ -359,6 +383,17 @@ How powerful auto generated bindings\n
 
 (('note:★ Extension library（拡張ライブラリー）'))\n
 (('note:☆ GObject Introspection: Recommended（オススメ）'))
+
+= libffi impl. by hand\n(('note:手動でのlibffiベースの実装'))
+
+  # img
+  # src = images/bindings-by-ffi.svg
+  # relative_width = 100
+
+== Slide properties
+
+: enable-title-on-image
+   false
 
 = libffi impl. by hand\n(('note:手動でのlibffiベースの実装'))
 
@@ -418,6 +453,17 @@ How powerful auto generated bindings\n
 
 = libffi impl. by gen.\n(('note:自動生成でのlibffiベースの実装'))
 
+  # img
+  # src = images/bindings-by-gobject-introspection.svg
+  # relative_width = 100
+
+== Slide properties
+
+: enable-title-on-image
+   false
+
+= libffi impl. by gen.\n(('note:自動生成でのlibffiベースの実装'))
+
   # coderay ruby
   require "gi"
   Hello = GI.load("Hello")
@@ -432,415 +478,127 @@ How powerful auto generated bindings\n
   => "Hello"
   # Object oriented API!
 
-= Appendix\n(('note:付録'))
-
-  * Ext, SWIG, FFI, GI impl. details
-  * How to create fat gem
-
-= Method1: C API\n(('note:方法1：C API'))
-
-  * Use C API provided by Ruby\n
-    (('note:Rubyが提供するC APIを使う'))
-    * (('wait'))It's for creating ext lib\n
-      (('note:拡張ライブラリーを作るためのAPI'))
-
-= C API: Define class\n(('note:C API：クラス定義'))
-
-  # coderay c
-  #include <ruby.h>
-  void
-  Init_hello(void)
-  {
-    rb_define_class("Hello", rb_cObject);
-    /* Ruby: class Hello; end */
-  }
-
-= C API: Initialize\n(('note:C API：初期化'))
-
-  # coderay c
-  #include <ruby.h>
-  void
-  Init_#{module_name}(void)
-  {
-    /* require "#{module_name}"
-       calls this function */
-  }
-
-= C API: Init example\n(('note:C API：初期化例'))
-
-  # coderay c
-  #include <ruby.h>
-  void
-  Init_hello(void)
-  {
-    /* require "hello"
-       calls this function */
-  }
-
-= C API: Define method\n(('note:C API：メソッド定義'))
-
-  # coderay c
-  static VALUE hello_to_s(VALUE self) {
-    return rb_str_new_cstr("Hello");
-  }
-  void Init_hello(void) {
-    VALUE hello;
-    hello = rb_define_class("Hello", rb_cObject);
-    rb_define_method(hello, "to_s", hello_to_s, 0);
-  }
-
-= C API: Build1\n(('note:C API：ビルド1'))
-
-  # coderay ruby
-  # extconf.rb
-  require "mkmf"
-  # "hello" == "#{module_name}"
-  create_makefile("hello")
-
-= C API: Build2\n(('note:C API：ビルド2'))
-
-  % ruby extconf.rb
-  % make
-  (hello.so is generated.)
-
-= C API: Use\n(('note:C API：使う'))
-
-  % irb -I .
-  irb(main):001:0> require "hello"
-  => true
-  irb(main):002:0> hello = Hello.new
-  => #<Hello:0x00000001fd15a0>
-  irb(main):003:0> hello.to_s
-  => "Hello"
-
-= C API: Create bindings\n(('note:C API：バインディングを作る'))
-
-  * C API is for ext lib\n
-    (('note:C APIを使うと拡張ライブラリーを作れる'))
-  * (('wait'))C API is also for bindings\n
-    (('note:C APIを使うとバインディングも作れる'))
-  * (('wait'))Show it from now just FYI\n
-    (('note:参考までにこれから作り方を紹介する'))
-
-= C API: Again, FYI!\n(('note:C API：参考のためですよ！'))
-
-  * You don't need to understand about details now\n
-    (('note:この場では詳細をわからなくても構わない'))\n
-    * (('note:See also: Ruby:doc/extension.rdoc'))
-    * (('note:See also: kou/rabbit-slide-kou-rubykaigi-2016'))
-  * You just need to know how many steps exist\n
-    (('note:どのくらいステップがあるかわかれば十分'))
-
-= Bindings target\n(('note:バインディング対象'))
-
-  # coderay c
-  /* hello.h */
-  #pragma once
-  typedef struct hello_t Hello;
-  Hello      *hello_new    (void);
-  void        hello_free   (Hello *hello);
-  const char *hello_message(Hello *hello);
-
-= Define class\n(('note:クラス定義'))
-
-  # coderay c
-  void
-  Init_hello(void)
-  {
-    VALUE hello;
-    /* Ruby: class Hello < Data; end */
-    hello = rb_define_class("Hello", rb_cData);
-    rb_define_alloc_func(hello, rb_hello_alloc);
-  }
-
-= Wrap struct\n(('note:構造体をラップ'))
-
-  # coderay c
-  static VALUE
-  rb_hello_alloc(VALUE klass)
-  {
-    /* Allocate memory for wrapping
-       target struct in C (= Hello struct). */
-    return TypedData_Wrap_Struct(klass,
-                                 &rb_hello_type,
-    /* Target struct is NULL at this phase. */
-                                 NULL);
-  }
-
-= Define type metadata\n(('note:型用のメタデータを定義'))
-
-  # coderay c
-  static const rb_data_type_t rb_hello_type = {
-    "Hello", /* Type name. */
-    /* Mark, free, size functions. */
-    {NULL, rb_hello_free, NULL,},
-    NULL, /* Parent. It must be NULL. */
-    NULL, /* Wrapped target struct. */
-    RUBY_TYPED_FREE_IMMEDIATELY,
-  };
-
-= Free function\n(('note:メモリー解放関数'))
-
-  # coderay c
-  static void
-  rb_hello_free(void *data)
-  {
-    Hello *hello = data;
-    /* Just call the free function. */
-    hello_free(hello);
-  }
-
-= Register (({initialize}))\n(('note:(({initialize}))登録'))
-
-  # coderay c
-  void Init_hello(void) {
-    /* VALUE hello = Hello class */
-    /* Ruby: def initialize; end */
-    rb_define_method(hello,
-          /* Name */ "initialize",
-                     rb_hello_initialize,
-    /* No argument */ 0);
-  }
-
-= Initialize\n(('note:初期化'))
-
-  # coderay c
-  static VALUE
-  rb_hello_initialize(VALUE self)
-  {
-    Hello *hello;
-    hello = hello_new();    /* Create a target */
-    DATA_PTR(self) = hello; /* Wrap the target */
-    return Qnil;
-  }
-
-= Bind method\n(('note:メソッドをバインド'))
-
-  # coderay c
-  static VALUE rb_hello_message(VALUE self) {
-    Hello *hello;
-    const char *message;
-    TypedData_Get_Struct( /* Unwrap the target. */
-      self, Hello, &rb_hello_type, hello);
-    message = hello_message(hello); /* Call. */
-    return rb_str_new_cstr(message); /* C -> Ruby */
-  }
-
-= Build1\n(('note:ビルド1'))
-
-  # coderay ruby
-  # extconf.rb
-  require "mkmf"
-  # Accept --with-libhello-*.
-  dir_config("libhello")
-  have_header("hello.h")
-  have_library("hello", "hello_new")
-
-  create_makefile("hello")
-
-= Build2\n(('note:ビルド2'))
-
-  % ruby extconf.rb \
-      --with-libhello-dir=../../libhello
-  % make
-  (hello.so is generated.)
-
-= Use\n(('note:使う'))
-
-  % LD_LIBRARY_PATH=../../libhello/lib \
-      irb -I .
-  irb(main):001:0> require "hello"
-  => true
-  irb(main):002:0> hello = Hello.new
-  => #<Hello:0x00000002ae0e28>
-  irb(main):003:0> hello.message
-  => "Hello"
-
-= C API: Merit\n(('note:C API：メリット'))
-
-  * Can create bindings\n
-    (('note:バインディングを作れる'))
-  * (('wait'))Can use only with C and Ruby knowledge\n
-    (('note:CとRubyを知っていれば使える'))
-
-= C API: Demerit\n(('note:C API：デメリット'))
-
-  * Many works for many (('note:target')) API\n
-    (('note:対象のAPIがたくさんあるとやることが多い'))
-  * (('wait'))Users need C compiler to install\n
-    (('note:ユーザーはインストール時にCコンパイラーが必要'))
-    * Most Windows users don't have it\n
-      (('note:多くのWindowsユーザーは持っていない'))
-
-= C API: Windows users\n(('note:C API：Windowsユーザー'))
-
-  * How to install extension library...?\n
-    (('note:拡張ライブリーをインストールするにはどうすれば…？'))
-    * (('wait'))Install C compiler (('note:(DevKit)'))\n
-      (('note:Cコンパイラー（DevKit）をインストール'))
-    * (('wait'))Distribute built binary\n
-      (('note:ビルド済みバイナリーを配布'))
-
-= C API: Fat gem\n(('note:C API：fat gem'))
-
-  * Gem includes built binaries\n
-    (('note:ビルド済みバイナリー入りgem'))
-    * (('note:(Mainly)')) Provided for Windows users\n
-      (('note:主にWindowsユーザー向けに提供'))
-  * (('wait'))Windows users don't need C compiler😼\n
-    (('note:WindowsユーザーはCコンパイラーを用意しなくてよい'))
-
-= Fat gem: Paths\n(('note:fat gem：パス'))
-
-Built binaries included in gem:\n
-(('note:gem内にビルド済みバイナリーが入っている：'))
-
-  ./lib/hello.rb
-  ./lib/2.1/hello.so # For Ruby 2.1
-  ./lib/2.2/hello.so # For Ruby 2.2
-  ./lib/2.3/hello.so # For Ruby 2.3
-
-= Fat gem: Load\n(('note:fat gem：読み込み'))
-
-  # coderay ruby
-  # hello.rb
-  begin
-    major, minor, = RUBY_VERSION.split(".")
-    # e.g.: require "2.3/hello.so"
-    require "#{major}.#{minor}/hello.so"
-  rescue LoadError
-    require "hello.so"
-  end
-
-= Fat gem: Paths: Bindings\n(('note:fat gem：バインディングの時のパス'))
-
-  ./lib/hello.rb
-  ./lib/2.1/hello.so # For Ruby 2.1
-  ./lib/2.2/hello.so # For Ruby 2.2
-  ./lib/2.3/hello.so # For Ruby 2.3
-  # ↓Target library's DLL
-  ./vendor/local/bin/hello.dll
-
-= Fat gem: Load: Bindings\n(('note:fat gem：バインディングの時の読み込み'))
-
-  # coderay ruby
-  # hello.rb
-  if /mingw|mswin/ =~ RUBY_PLATFORM
-    ENV["PATH"] += # For finding DLL
-      ";#{__dir__}\\..\\vendor\\local\\bin"
-  end
-  begin
-    major, minor, = RUBY_VERSION.split(".")
-    # ...
-
-= Fat gem: How to create?\n(('note:fat gem：作り方'))
-
-  (1) (('wait'))Build DLLs\n
-      (('note:DLLをビルド'))
-  (2) (('wait'))Bundle DLLs to gem\n
-      (('note:gemにDLLをバンドル'))
-
-= Fat gem: How to build?\n(('note:fat gem：ビルド方法'))
-
-  * (('wait'))Build on Windows with C compiler\n
-    (('note:Windows上でCコンパイラーでビルド'))
-  * (('wait'))Build on GNU/Linux or OS X with C cross compiler\n
-    (('note:GNU/LinuxまたはOS X上でCクロスコンパイラーでビルド'))
-    * Popular\n
-      (('note:こちらが一般的'))
-
-= How to cross compile\n(('note:クロスコンパイル方法'))
-
-  (1) Cross compile target Rubyies\n
-      (('note:対象のRubyをクロスコンパイル'))
-  (2) Run (({extconf.rb})) with target Rubies\n
-      (('note:対象のRubyで(({extconf.rb}))を実行'))
-  (3) Cross compile\n
-      (('note:クロスコンパイル'))
-
-= Fat gem helper gems\n(('note:fat gem作成支援gem'))
-
-  * rake-compiler
-    * Cross compiling and bundling\n
-      (('note:クロスコンパイルとバンドル支援'))
-  * rake-compiler-dock
-    * Prepares build environment\n
-      (('note:ビルド環境用意支援'))
-
-= Fat gem and bindings\n(('note:fat gemとバインディング'))
-
-  * Bindings need DLL of target library\n
-    (('note:バインディングは対象ライブラリーのDLLも必要'))
-  * Target library should be also cross compiled\n
-    (('note:対象ライブラリーもクロスコンパイルが必要'))
-
-= How to cross compile1\n(('note:クロスコンパイル方法1'))
-
-For GNU Autotools:
-
-  % ./configure \
-      --prefix=vendor/local \
-      --host=x86_64-w64-mingw32
-  % make
-  % make install
-
-= How to cross compile2\n(('note:クロスコンパイル方法2'))
-
-For CMake:
-
-  % cmake . \
-      -DCMAKE_INSTALL_PREFIX=vendor/local \
-      -DCMAKE_SYSTEM_NAME=Windows \
-      -DCMAKE_SYSTEM_PROCESSOR=x64 \
-      -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc
-  % make
-  % make install
-
-= How to bundle\n(('note:バンドル方法'))
-
-  # coderay ruby
-  # #{gem_name}.gemspec
-  Gem::Specification.new do |spec|
-    # ...
-    spec.files +=
-      Dir.glob("vendor/local/**/*")
-    # ...
-  end
-
-= Fat gem & Windows users\n(('note:fat gemとWindowsユーザー'))
-
-  * Windows users can't use bindings created by C API\n
-    (('note:インストールが難しくてWindowsユーザーはC APIで作成されたバインディングをインストールできない'))
-    * Difficult to install
-  * (('wait'))Fat gem makes bindings easy to install for Windows users\n
-    (('note:fat gemがあれば簡単にインストールできる'))
-
-= C API: Demerit (reprise)\n(('note:C API：デメリット（再掲）'))
-
-  * Many works for many (('note:target')) API\n
-    (('note:対象のAPIがたくさんあるとやることが多い'))
-  * (('wait'))Users need C compiler to install\n
-    (('note:ユーザーはインストール時にCコンパイラーが必要'))
-    * Most Windows users don't have it\n
-      (('note:多くのWindowsユーザーは持っていない'))
-
-= SWIG
-
-(('tag:center'))
-Simplified Wrapper and Interface Generator
-
-  * (('wait'))Generate bindings by C API\n
-    (('note:C APIを使ったバインディングを生成'))
-  * (('wait'))Reduce hand writing codes\n
-    (('note:手書きのコードを減らせる'))
-
-= SWIG: How to use\n(('note:SWIG：使い方'))
-
-  (1) Generate bindings\n
-      (('note:バインディングを生成'))
-  (2) (('wait'))Build bindings (('note:(Same as C API)'))\n
-      (('note:バインディングをビルド（C APIと同じ）'))
-  (3) (('wait'))Use bindings (('note:(Same as C API)'))\n
-      (('note:バインディングを使う（C APIと同じ）'))
-
-= SWIG: Generate\n(('note:SWIG：生成'))
+= Wrap up1: libffi\n(('note:まとめ1：libffi'))
+
+  * (('wait'))By hand: Need many works\n
+    (('note:手動：たくさん書かないといけない'))
+    * Need more works for easy to use\n
+      (('note:使いやすいAPIにするにはさらに書かないといけない'))
+  * (('wait'))By generation: Less works\n
+    (('note:生成：書くことが少ない'))
+    * No more works for easy to use\n
+      (('note:しかも使いやすいAPIになる'))
+
+= Wrap up2: libffi\n(('note:まとめ2：libffi'))
+
+  * On maintenance\n
+    e.g.: New functions\n
+    (('note:メンテナンス時：（例：新しい関数が追加された）'))
+    * (('wait'))By hand: Need more works\n
+      (('note:手動：追加作業あり'))
+    * (('wait'))By generation: No more works\n
+      (('note:生成：追加作業なし'))\n
+      This is a large benefit!\n
+      (('note:これは大きな利点！'))
+
+= SWIG⇔GI: When\n(('note:SWIG⇔GI：生成タイミング'))
+
+  * When are bindings generated?\n
+    (('note:バインディングの生成タイミング'))
+    * (('wait'))On build⇔Runtime\n
+      (('note:ビルド時⇔ランタイム'))
+    * (('wait'))SWIG: Need to build for new ver.\n
+      (('note:新しいバージョンがでたらリビルドが必要'))
+    * (('wait'))GI: No more works for new ver.\n
+      (('note:新しいバージョンがでても追加作業なし'))
+
+= SWIG⇔GI: Maintenance\n(('note:SWIG⇔GI：メンテナンス'))
+
+  * SWIG: Maintain .i file for each bindings\n
+    (('note:各バインディング用に.iファイルをメンテナンス'))
+  * GI: Maintain annotations for all bindings\n
+    (('note:全バインディング用にアノテーションをメンテナンス'))
+    * (('wait'))We can work together with other language bindings maintainers
+
+= SWIG: Overview (reprise)\n(('note:SWIG：概要（再掲）'))
+
+  # img
+  # src = images/bindings-by-swig.svg
+  # relative_height = 100
+
+== Slide properties
+
+: enable-title-on-image
+   false
+
+= SWIG: Maintenance\n(('note:SWIG：メンテナンス'))
+
+  # img
+  # src = images/maintain-swig-based-bindings.svg
+  # relative_height = 100
+
+== Slide properties
+
+: enable-title-on-image
+   false
+
+= GI: Overview (reprise)\n(('note:GI：概要（再掲）'))
+
+  # img
+  # src = images/bindings-by-gobject-introspection.svg
+  # relative_width = 100
+
+== Slide properties
+
+: enable-title-on-image
+   false
+
+= GI: Maintenance\n(('note:GI：メンテナンス'))
+
+  # img
+  # src = images/maintain-gobject-introspection-based-bindings.svg
+  # relative_width = 100
+
+== Slide properties
+
+: enable-title-on-image
+   false
+
+= Wrap up1\n(('note:まとめ1'))
+
+  * Bindings: Glue of C and Ruby\n
+    (('note:バインディング：主にCとRubyをつなぐもの'))
+    * (('wait'))You can use features implemented in C from Ruby\n
+      (('note:Cで実装された機能をRubyから使える'))
+
+= Wrap up2\n(('note:まとめ2'))
+
+  * Bindings expand use cases of Ruby\n
+    (('note:バインディングはRubyを使えるケースを増やす'))
+    * Because they provide existing good features to Ruby\n
+      (('note:バインディングは既存のよい機能をRubyで使えるようにするから'))
+
+= Wrap up3\n(('note:まとめ3'))
+
+  * Recommend GI based bindings\n
+    (('note:GIベースのバインディングがオススメ'))
+    * For easy to maintain\n
+      (('note:メンテンナンスしやすいから'))
+    * For easy to API\n
+      (('note:使いやすいAPIになるから'))
+
+(('note:GI: GObject Introspection'))
+
+= Wrap up4\n(('note:まとめ4'))
+
+Let's becoming a bindings developer!\n
+(('note:バインディング開発者になろう！'))
+
+= Things not talked\n(('note:話さなかったこと'))
+
+  * Bindings are difficult to install on Win. Any idea?\n
+    (('note:Windowsでインストールが大変。どうすれば？'))
+  * Performance\n
+    (('note:性能'))
+  * Details of each bindings create method\n
+    (('note:それぞれのバインディング作成方法の詳細'))
