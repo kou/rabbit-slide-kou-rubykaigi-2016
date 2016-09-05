@@ -594,6 +594,20 @@ How powerful auto generated bindings\n
 Let's becoming a bindings developer!\n
 (('note:バインディング開発者になろう！'))
 
+= Advertisement\n(('note:宣伝'))
+
+  * OSS Gate
+    * Helps people who want to be an OSS developer (but not yet)\n
+      (('note:OSS開発者になりたいけど一歩踏み出せていない人を支援'))
+  * ClearCode booth(('note:（クリアコードブース）'))
+    * You can discus about OSS Gate and more technical details\n
+      (('note:OSS Gateやもっと技術的な話や雑談をできる'))
+
+= Wrap up (reprise)\n(('note:まとめ（再掲）'))
+
+Let's becoming a bindings developer!\n
+(('note:バインディング開発者になろう！'))
+
 = Things not talked\n(('note:話さなかったこと'))
 
   * Bindings are difficult to install on Win. Any idea?\n
