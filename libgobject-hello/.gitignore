@@ -17,3 +17,4 @@ Makefile
 /stamp-h1
 /doc/reference/gtk-doc.make
 /doc/reference/version.xml
+!/doc/reference/version.xml.in
