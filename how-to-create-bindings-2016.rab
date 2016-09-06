@@ -31,11 +31,11 @@
 
 (('tag:center'))
 (('tag:large'))
-You know about\n
-how to create bindings
+You become\n
+a new bindings developer
 
 (('tag:center'))
-(('note:バインディングの作り方を知ること'))
+(('note:あなたが新しくバインディング開発者になること'))
 
 = Bindings?\n(('note:バインディングとは'))
 
@@ -362,8 +362,8 @@ How powerful auto generated bindings\n
 = Wrap up2: Ext\n(('note:まとめ2：拡張ライブラリー'))
 
   * On maintenance\n
-    e.g.: New functions\n
-    (('note:メンテナンス時：（例：新しい関数が追加された）'))
+    e.g.: New functions, enums\n
+    (('note:メンテナンス時：（例：新しい関数・列挙値が追加された）'))
     * (('wait'))By hand: Need more works\n
       (('note:手動：追加作業あり'))
     * (('wait'))By generation: No more works\n
@@ -492,8 +492,8 @@ How powerful auto generated bindings\n
 = Wrap up2: libffi\n(('note:まとめ2：libffi'))
 
   * On maintenance\n
-    e.g.: New functions\n
-    (('note:メンテナンス時：（例：新しい関数が追加された）'))
+    e.g.: New functions, enums\n
+    (('note:メンテナンス時：（例：新しい関数・列挙値が追加された）'))
     * (('wait'))By hand: Need more works\n
       (('note:手動：追加作業あり'))
     * (('wait'))By generation: No more works\n
@@ -506,7 +506,7 @@ How powerful auto generated bindings\n
   * When are bindings generated?\n
     (('note:バインディングの生成タイミング'))
     * (('wait'))On build⇔Runtime\n
-      (('note:ビルド時⇔ランタイム'))
+      (('note:ビルド時⇔実行時'))
     * (('wait'))SWIG: Need to build for new ver.\n
       (('note:新しいバージョンがでたらリビルドが必要'))
     * (('wait'))GI: No more works for new ver.\n
@@ -514,10 +514,10 @@ How powerful auto generated bindings\n
 
 = SWIG⇔GI: Maintenance\n(('note:SWIG⇔GI：メンテナンス'))
 
-  * SWIG: Maintain .i file for each bindings\n
-    (('note:各バインディング用に.iファイルをメンテナンス'))
-  * GI: Maintain annotations for all bindings\n
-    (('note:全バインディング用にアノテーションをメンテナンス'))
+  * SWIG: Maintain .i file for each language bindings\n
+    (('note:各言語バインディング用に.iファイルをメンテナンス'))
+  * GI: Maintain annotations for all language bindings\n
+    (('note:全言語バインディング用にアノテーションをメンテナンス'))
     * (('wait'))We can work together with other language bindings maintainers
 
 = SWIG: Overview (reprise)\n(('note:SWIG：概要（再掲）'))
@@ -612,7 +612,7 @@ Let's becoming a bindings developer!\n
 
   * Bindings are difficult to install on Win. Any idea?\n
     (('note:Windowsでインストールが大変。どうすれば？'))
-  * Performance\n
-    (('note:性能'))
+  * Performance・Annotation\n
+    (('note:性能・アノテーション'))
   * Details of each bindings create method\n
     (('note:それぞれのバインディング作成方法の詳細'))
