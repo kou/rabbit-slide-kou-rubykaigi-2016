@@ -59,7 +59,7 @@ a new bindings developer
 : enable-title-on-image
    false
 
-= But why do I know?\n(('note:でも、どうして知るといいの？'))
+= Why should I become?\n(('note:なんでバインディング開発者になるの？'))
 
   * (('wait'))To use Ruby in more cases\n
     (('note:Rubyをもっといろんな場面で使うため'))
@@ -159,7 +159,7 @@ How powerful auto generated bindings\n
       (('note:libffiを使ったライブラリー'))
     * (('wait'))Provides ((*Ruby*)) API\n
       to implement bindings\n
-      (('note:バインディングを実装するためのRubyレベルのAPIを提供'))
+      (('note:バインディングを実装するためのRubyのAPIを提供'))
 
 = libffi and bindings\n(('note:libffiとバインディング'))
 
