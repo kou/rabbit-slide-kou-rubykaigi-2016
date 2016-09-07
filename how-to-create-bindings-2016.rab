@@ -501,6 +501,18 @@ How powerful auto generated bindings\n
       This is a large benefit!\n
       (('note:これは大きな利点！'))
 
+= Impl. by generation\n(('note:生成ベースでの実装方法'))
+
+  # RT
+
+  , Ext★, SWIG, FFI, GI☆
+
+  Base\nTech, Ext, Ext, lib\nffi, lib\nffi
+  Impl.\nby, Hand, ((*Generate*)), Hand, ((*Generate*))
+
+(('note:★ Extension library（拡張ライブラリー）'))\n
+(('note:☆ GObject Introspection: Recommended（オススメ）'))
+
 = SWIG⇔GI: When\n(('note:SWIG⇔GI：生成タイミング'))
 
   * When are bindings generated?\n
@@ -573,7 +585,7 @@ How powerful auto generated bindings\n
 
 = Wrap up2\n(('note:まとめ2'))
 
-  * Bindings expand use cases of Ruby\n
+  * Bindings increase cases that Ruby can be used\n
     (('note:バインディングはRubyを使えるケースを増やす'))
     * Because they provide existing good features to Ruby\n
       (('note:バインディングは既存のよい機能をRubyで使えるようにするから'))
