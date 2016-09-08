@@ -59,22 +59,22 @@ a new bindings developer
 : enable-title-on-image
    false
 
-= Why should I become?\n(('note:なんでバインディング開発者になるの？'))
+= Why should I learn?\n(('note:なんでバインディング開発者になるの？'))
 
   * (('wait'))To use Ruby in more cases\n
     (('note:Rubyをもっといろんな場面で使うため'))
     * e.g.: (('tag:x-small:Machine leaning, multimedia, full text search, cipher and so on'))\n
       (('note:例：機械学習、画像・動画・音声処理、全文検索、暗号'))
-  * (('wait'))We can use existing good features in Ruby by bindings\n
+  * (('wait'))Can use existing features in Ruby through bindings\n
     (('note:バインディングがあると既存のいい機能をRubyで使える'))
 
 = Incr. bindings developer\n(('note:バインディング開発者が増えるといいな'))
 
-  * How about becoming a bindings developer?\n
+  * Why do I become a bindings developer?\n
     (('note:バインディング開発者になりませんか？'))
     * (('wait'))To expand use cases of Ruby!\n
       (('note:Rubyを使えるケースを増やすために！'))
-    * (('wait'))Not just an user for\n
+    * (('wait'))Not just a user for\n
       provided features\n
       (('note:提供された機能を使う1ユーザーではなく'))
 
@@ -92,7 +92,7 @@ a new bindings developer
 
 = Demo\n(('note:デモ'))
 
-How powerful auto generated bindings\n
+Make powerful auto generated bindings\n
 (('note:自動生成されたバインディングがいかに強力か'))
 
 = What is ext?\n(('note:拡張ライブラリーってなに？'))
@@ -299,10 +299,10 @@ How powerful auto generated bindings\n
   * SWIG can generate impl.\n
     (('note:Simplified Wrapper and Interface Generator'))\n
     (('note:SWIGで実装を生成できる'))
-  * (('wait'))An user
+  * (('wait'))A user
     * TensorFlow: A library for machine intelligence\n
       (('note:TensorFlow：機械知能のライブラリー'))\n
-      Uses to generate Python bindings\n
+      Used to generate Python bindings\n
       (('note:Pythonバインディングを生成するために使用'))
 
 = Ext impl. by SWIG\n(('note:SWIGでの拡張ライブラリーの実装'))
@@ -352,11 +352,11 @@ How powerful auto generated bindings\n
 
 = Wrap up1: Ext\n(('note:まとめ1：拡張ライブラリー'))
 
-  * (('wait'))By hand: Need many works\n
+  * (('wait'))By hand: Needs more work\n
     (('note:手動：たくさん書かないといけない'))
-  * (('wait'))By generation: Less works\n
+  * (('wait'))By generation: Less work\n
     (('note:生成：書くことが少ない'))
-    * Need more works for easy to use\n
+    * Needs more work for easy use\n
       (('note:使いやすいAPIにするにはたくさん書かないといけない'))
 
 = Wrap up2: Ext\n(('note:まとめ2：拡張ライブラリー'))
@@ -364,9 +364,9 @@ How powerful auto generated bindings\n
   * On maintenance\n
     e.g.: New functions, enums\n
     (('note:メンテナンス時：（例：新しい関数・列挙値が追加された）'))
-    * (('wait'))By hand: Need more works\n
+    * (('wait'))By hand: Needs more work\n
       (('note:手動：追加作業あり'))
-    * (('wait'))By generation: No more works\n
+    * (('wait'))By generation: No more work\n
       (('note:(But the bindings may not be easy to use)'))\n
       (('note:生成：（使いやすくないけど）追加作業なし'))\n
       This is a large benefit!\n
@@ -480,13 +480,13 @@ How powerful auto generated bindings\n
 
 = Wrap up1: libffi\n(('note:まとめ1：libffi'))
 
-  * (('wait'))By hand: Need many works\n
+  * (('wait'))By hand: Needs more work\n
     (('note:手動：たくさん書かないといけない'))
-    * Need more works for easy to use\n
+    * Needs more work for easy use\n
       (('note:使いやすいAPIにするにはさらに書かないといけない'))
-  * (('wait'))By generation: Less works\n
+  * (('wait'))By generation: Less work\n
     (('note:生成：書くことが少ない'))
-    * No more works for easy to use\n
+    * No more work for easy use\n
       (('note:しかも使いやすいAPIになる'))
 
 = Wrap up2: libffi\n(('note:まとめ2：libffi'))
@@ -494,9 +494,9 @@ How powerful auto generated bindings\n
   * On maintenance\n
     e.g.: New functions, enums\n
     (('note:メンテナンス時：（例：新しい関数・列挙値が追加された）'))
-    * (('wait'))By hand: Need more works\n
+    * (('wait'))By hand: Needs more work\n
       (('note:手動：追加作業あり'))
-    * (('wait'))By generation: No more works\n
+    * (('wait'))By generation: No more work\n
       (('note:生成：追加作業なし'))\n
       This is a large benefit!\n
       (('note:これは大きな利点！'))
@@ -521,16 +521,16 @@ How powerful auto generated bindings\n
       (('note:ビルド時⇔実行時'))
     * (('wait'))SWIG: Need to build for new ver.\n
       (('note:新しいバージョンがでたらリビルドが必要'))
-    * (('wait'))GI: No more works for new ver.\n
+    * (('wait'))GI: No more work for new ver.\n
       (('note:新しいバージョンがでても追加作業なし'))
 
 = SWIG⇔GI: Maintenance\n(('note:SWIG⇔GI：メンテナンス'))
 
-  * SWIG: Maintain .i file for each language bindings\n
+  * SWIG: Maintain .i file for each language binding\n
     (('note:各言語バインディング用に.iファイルをメンテナンス'))
   * GI: Maintain annotations for all language bindings\n
     (('note:全言語バインディング用にアノテーションをメンテナンス'))
-    * (('wait'))We can work together with other language bindings maintainers
+    * (('wait'))We can work together with other language binding maintainers
 
 = SWIG: Overview (reprise)\n(('note:SWIG：概要（再掲）'))
 
@@ -594,16 +594,16 @@ How powerful auto generated bindings\n
 
   * Recommend GI based bindings\n
     (('note:GIベースのバインディングがオススメ'))
-    * For easy to maintain\n
+    * For easy maintenance\n
       (('note:メンテンナンスしやすいから'))
-    * For easy to API\n
+    * For easy to use API\n
       (('note:使いやすいAPIになるから'))
 
 (('note:GI: GObject Introspection'))
 
 = Wrap up4\n(('note:まとめ4'))
 
-Let's becoming a bindings developer!\n
+Let's become a bindings developer!\n
 (('note:バインディング開発者になろう！'))
 
 = Advertisement\n(('note:宣伝'))
@@ -617,14 +617,14 @@ Let's becoming a bindings developer!\n
 
 = Wrap up (reprise)\n(('note:まとめ（再掲）'))
 
-Let's becoming a bindings developer!\n
+Let's become a bindings developer!\n
 (('note:バインディング開発者になろう！'))
 
-= Things not talked\n(('note:話さなかったこと'))
+= Things not covered\n(('note:話さなかったこと'))
 
   * Bindings are difficult to install on Win. Any idea?\n
     (('note:Windowsでインストールが大変。どうすれば？'))
   * Performance・Annotation\n
     (('note:性能・アノテーション'))
-  * Details of each bindings create method\n
+  * Details of each binding's create method\n
     (('note:それぞれのバインディング作成方法の詳細'))
