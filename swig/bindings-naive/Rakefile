@@ -6,15 +6,7 @@ makefile = "Makefile"
 
 task :default => :build
 
-file wrap_c => interface do |task|
-  sh("swig",
-     "-Wall",
-     "-I../../libhello/include",
-     "-ruby",
-     *task.prerequisites)
-end
-
-file makefile => wrap_c do
+file makefile do
   ruby("extconf.rb", "--with-libhello-dir=../../libhello")
 end
 
