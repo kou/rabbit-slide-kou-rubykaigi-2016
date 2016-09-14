@@ -5,6 +5,7 @@ exit(false) unless have_header("hello.h")
 exit(false) unless have_library("hello", "hello_new")
 
 $srcs = ["hello_wrap.c"]
+$cleanfiles << "hello_wrap.c"
 
 create_makefile("hello")
 File.open("Makefile", "a") do |makefile|
